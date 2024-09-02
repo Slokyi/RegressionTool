@@ -49,9 +49,11 @@ namespace Toolbox
                 services.AddSingleton<DashboardPage>();
                 services.AddSingleton<DashboardViewModel>();
                 services.AddSingleton<DataPage>();
+                services.AddSingleton<CompareFeedPage>();
                 services.AddSingleton<DataViewModel>();
                 services.AddSingleton<SettingsPage>();
                 services.AddSingleton<SettingsViewModel>();
+                services.AddSingleton<CompareFeedPageViewModel>();
             }).Build();
 
         /// <summary>
