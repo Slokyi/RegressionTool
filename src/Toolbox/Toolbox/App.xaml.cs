@@ -1,12 +1,17 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.IO;
 using System.Reflection;
-using System.Windows;
 using System.Windows.Threading;
+using Toolbox.Services;
+using Toolbox.ViewModels.Pages;
+using Toolbox.ViewModels.Windows;
+using Toolbox.Views.Pages;
+using Toolbox.Views.Windows;
 using Wpf.Ui;
 
-namespace Toolbox.WPF
+namespace Toolbox
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -23,7 +28,30 @@ namespace Toolbox.WPF
             .ConfigureAppConfiguration(c => { c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)); })
             .ConfigureServices((context, services) =>
             {
-                throw new NotImplementedException("No service or window was registered.");
+                services.AddHostedService<ApplicationHostService>();
+
+                // Page resolver service
+                services.AddSingleton<IPageService, PageService>();
+
+                // Theme manipulation
+                services.AddSingleton<IThemeService, ThemeService>();
+
+                // TaskBar manipulation
+                services.AddSingleton<ITaskBarService, TaskBarService>();
+
+                // Service containing navigation, same as INavigationWindow... but without window
+                services.AddSingleton<INavigationService, NavigationService>();
+
+                // Main window with navigation
+                services.AddSingleton<INavigationWindow, MainWindow>();
+                services.AddSingleton<MainWindowViewModel>();
+
+                services.AddSingleton<DashboardPage>();
+                services.AddSingleton<DashboardViewModel>();
+                services.AddSingleton<DataPage>();
+                services.AddSingleton<DataViewModel>();
+                services.AddSingleton<SettingsPage>();
+                services.AddSingleton<SettingsViewModel>();
             }).Build();
 
         /// <summary>
